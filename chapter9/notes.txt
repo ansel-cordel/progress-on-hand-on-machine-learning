@@ -1,0 +1,137 @@
+--------------------------------------------------------Chapter 9: UNSUPERVISED LEARNING---------------------------------------------------------------------
+
+INTRODUCTION
+
+Unsupervised learning, as we mentioned earlier, is when we train a model without labeled data.
+It’s mainly used for tasks such as:
+
+Clustering (grouping similar instances)
+
+Dimensionality reduction
+
+Recommendation systems
+
+Image segmentation
+
+Semi-supervised learning (as a preprocessing step)
+
+The goal is for the algorithm to find patterns, structure, or groupings in the data on its own.
+
+CLUSTERING
+
+Clustering means grouping similar data points together based on their features.
+
+1) K-Means Clustering
+
+The idea behind K-Means is pretty straightforward:
+
+Initialize K centroids (the centers of the clusters).
+
+Assign each instance to the cluster whose centroid is closest to it.
+
+Move (update) each centroid to the mean position of all the points assigned to it.
+
+Repeat steps 2–3 until the centroids stop moving much (that’s convergence).
+
+Hard clustering: each instance belongs to exactly one cluster.
+
+Soft clustering: computes distances to all centroids and assigns probabilities of belonging.
+
+You can access the assigned cluster of each instance using the attribute:
+
+model.labels_
+
+⚙️ Issues in K-Means
+
+There are two main challenges:
+
+Initialization: where to place the centroids at the start.
+
+The algorithm usually runs several times with different random initializations and picks the best result.
+
+The default method in most libraries (like Scikit-Learn) ensures centroids are well separated at initialization (called k-means++).
+
+Choosing the number of clusters (K):
+
+Inertia: measures how close the instances are to their assigned centroids (sum of squared distances).
+Lower inertia generally means a better fit, but not always — more clusters will always reduce inertia.
+
+Silhouette score: measures how well the points fit within their clusters vs how far they are from others.
+It’s more reliable but computationally expensive.
+
+Elbow method: plotting inertia vs. K and finding the "elbow" point (where improvement slows down).
+
+Knee/knife graphs can also help visualize the optimal K.
+
+⚡ Optimization Variants
+
+Elkan’s accelerated K-Means: reduces the number of distance computations using the triangle inequality — faster with large datasets.
+
+Mini-Batch K-Means: uses small random batches instead of the whole dataset — faster but slightly less accurate.
+
+Pros and Cons
+
+ Simple and efficient
+ Works well on spherical, well-separated clusters
+ but:
+ Struggles with non-spherical or unevenly sized clusters
+ Requires K to be known beforehand
+
+2) DBSCAN (Density-Based Spatial Clustering of Applications with Noise)
+
+DBSCAN works based on density, not distance to centroids.
+It uses two parameters:
+
+ε (epsilon): the maximum distance between two points to be considered neighbors.
+
+min_samples: the minimum number of points required to form a dense region.
+
+How it works:
+
+Pick a random point and find all points within ε (its neighborhood).
+
+If it has at least min_samples neighbors, it’s a core point.
+
+All neighbors of a core point belong to the same cluster.
+If some of those neighbors are also core points, their neighbors are added too — clusters expand recursively.
+
+Points that don’t belong to any cluster are labeled –1 (outliers).
+
+Notes:
+
+DBSCAN doesn’t need the number of clusters beforehand.
+
+It can find arbitrarily shaped clusters and detect outliers automatically.
+
+It doesn’t have a predict() method (since clusters are defined by density),
+but you could train another classifier later on the core points to generalize to new data.
+
+3) GMM (Gaussian Mixture Models)
+
+GMM assumes the data is generated from a mixture of several Gaussian (normal) distributions, but it doesn’t know:
+
+How many distributions (clusters) there are,
+
+Their means (centers),
+
+Their variances (spread/shape).
+
+The algorithm learns these parameters using the Expectation-Maximization (EM) algorithm, which repeats two main steps:
+
+E-step (Expectation):
+Based on the current estimates of each Gaussian, calculate the probability (responsibility) that each instance belongs to each cluster.
+
+M-step (Maximization):
+Update the parameters of each Gaussian (mean, variance, and weight) based on those probabilities —
+i.e., move and reshape each Gaussian to better fit the data.
+
+This process repeats until convergence.
+
+Notes:
+
+Unlike K-Means, GMM can model elliptical clusters (not just round ones).
+
+It gives soft assignments — probabilities of belonging to each cluster.
+
+The hyperparameter n_init (number of initializations) defaults to 1,
+but setting it to something like 10 is better for stability.

@@ -1,0 +1,88 @@
+Chapter 1: INTRODUCTION
+
+When to use Machine Learning:
+Machine Learning (ML) is useful when a problem has too many conditions to handle manually, or when new data constantly comes in that can change the outcome.
+In such situations, writing endless "if" and "else" statements is not practical.
+Instead of hardcoding every rule, we use an ML model to learn patterns automatically from data and make decisions on its own.
+
+Types of Machine Learning Systems
+
+Based on Supervision:
+
+1-1) Supervised Learning:
+You provide labeled data to the model, meaning each training example already has the correct answer (label).
+Examples:
+
+Classification: predicting categories (like spam or not spam).
+
+Regression: predicting continuous values (like price, temperature, etc.).
+
+1-2) Unsupervised Learning:
+The model learns without labeled data by finding hidden patterns and relationships between features.
+Examples include:
+
+Clustering
+
+Dimensionality reduction
+
+Anomaly detection
+
+Novelty detection (usually uses clean, normal data)
+
+1-3) Semi-Supervised Learning:
+This method combines the previous two.
+It uses both labeled and unlabeled data, which makes it useful when labeling everything manually is too expensive or slow.
+
+1-4) Self-Supervised Learning:
+The model generates its own labels from the data.
+For example, it can hide part of an image and try to predict the missing part.
+In other words, it teaches itself using automatically created labels from the data itself.
+
+Batch Learning vs Online Learning
+
+Batch Learning:
+The model is trained on all the data at once.
+Once it’s trained, it doesn’t learn again unless you retrain it from the beginning with new data.
+This works well for static datasets that don’t change often.
+
+Online Learning:
+The model learns gradually as new data arrives.
+It updates itself on the fly using small batches of data over time.
+This approach is ideal for systems that need to adapt to changing or continuous data.
+
+How the Model Generalizes
+
+Instance-Based Learning:
+The model makes predictions by comparing new examples to previously seen ones.
+It relies on a similarity or distance measure to find the most similar cases.
+Example: K-Nearest Neighbors (KNN).
+
+Model-Based Learning:
+The model builds a general function or rule from the training data that maps inputs to outputs.
+Once it learns this relationship, it can make predictions on new data by applying the learned pattern.
+
+
+
+
+
+
+
+
+
+
+
+
+----------------------------------------------------------chapter 1:INTRODUCTION----------------------------------------------------------------------------
+use ml when there is too many conditions to satisfy a problem or there is always new data coming in that might change the outcome (hard coding is impossible) basically rather then using ifninite amounts of if and elses and adding to them each time use a ml model
+Types of ml systems (very important):
+1)-suprvision:
+1-1)-supervised:basically give a label to ur training data examples such as callsifications (self explanatory) and regression (predicting a value)
+1-2)-unsupervised:let it learn by itself by finding patterns and relations between features and clustring them examples :data visualtion,dimensionality reduction,anomaly detection and novelty detection (uses clean data)
+1-3)-semi-supervised:its usually uses the previous two types for watever type of data
+1-4)-self-supervised:what i understood is that u use it to teach it to generate labels by itself ki chghl y3lm ro7ah it hides part of an image so he can predict it (labeled by default)
+2)-Batch Vs online learning:
+batchlearning:quite simple u feed the data to your model directly in one go (it doesnt learn again after the initial one unless u wanna do the steps all over again)
+online learning:it can learn on new data on the fly by feeding small batches of data byy time
+3)-how it generalize:
+instance based: based on similarity with previous data by using a similarity measure example :KNN
+model based:build a model of these examples and then use that model (function) that maps inputs to outputs. to make predictions it basically generalize a pattern from the data

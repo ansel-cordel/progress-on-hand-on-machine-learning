@@ -1,0 +1,173 @@
+CHAPTER 2: REGRESSION METHODS
+1) LINEAR REGRESSION
+
+PS: The “linear” in the name doesn’t mean it will always produce a straight line. It means that the equation is linear in its parameters.
+
+Concept:
+
+Training a linear regression model means finding its bias (intercept) and slope(s) for the given features.
+
+Prediction equation:
+
+ŷ = θ₀ + θ₁x₁ + θ₂x₂ + … + θₙxₙ
+
+
+Normal Equation (closed form):
+
+θ = (XᵀX)⁻¹ Xᵀy
+
+
+If XᵀX is not invertible, we use the pseudoinverse instead — it’s more stable and works even when the matrix is singular.
+
+However, this method becomes computationally expensive when there are too many features, since calculating the matrix inverse is costly.
+
+Alternative:
+Use Singular Value Decomposition (SVD), which breaks the matrix into three smaller, more stable matrices. Still expensive, though.
+
+Note:
+
+There’s a difference between a loss (cost) function and an evaluation function.
+We use the loss function for training, and it should be differentiable.
+Evaluation metrics are for measuring performance after training.
+
+2) GRADIENT DESCENT
+Summary:
+
+Gradient Descent is an iterative optimization algorithm used to minimize the cost function.
+It starts with random parameter values and gradually updates them in the direction that reduces the error.
+
+You can imagine it as a ball rolling down a hill toward the lowest point — the minimum of the cost function.
+
+Math formula:
+θ₍ₜ₊₁₎ = θ₍ₜ₎ – α × ∇f(θ₍ₜ₎)
+
+
+where:
+
+α = learning rate
+
+∇f(θ₍ₜ₎) = gradient of the cost function at current position
+
+Intuition:
+
+If the learning rate is too large → it might overshoot and never converge.
+
+If too small → it’ll take forever to reach the minimum.
+
+It stops when the gradient is close to zero (minimum point).
+
+Problem:
+Not all cost functions look like a nice “bowl”.
+Some have local minima, ridges, or flat plateaus that make convergence harder.
+
+Types of Gradient Descent:
+
+a) Batch Gradient Descent:
+Uses the entire training set to compute the gradient each step.
+→ Accurate but slow.
+
+b) Stochastic Gradient Descent (SGD):
+Uses just one training instance per step.
+→ Faster, but “bounces” around the minimum instead of settling exactly on it.
+→ This randomness helps it escape local minima, though.
+
+c) Mini-Batch Gradient Descent:
+A middle ground. Uses small random batches instead of the whole dataset or just one instance.
+→ Faster than batch, more stable than pure SGD.
+
+3) POLYNOMIAL REGRESSION
+
+When the data is not linearly related, we can add powers of each feature as new features.
+
+Example:
+If we have features a and b and degree = 3, the new features will include:
+
+a, a², a³, b, b², b³, ab, a²b, ab², etc.
+
+
+Then, we just apply linear regression on this expanded feature set.
+
+4) LEARNING CURVES
+
+Learning curves help visualize underfitting vs overfitting by plotting training and validation errors.
+
+If both are high → underfitting
+
+If there’s a big gap → overfitting
+
+Bias-Variance Tradeoff:
+You must balance between these two.
+Too simple → underfit (high bias)
+Too complex → overfit (high variance)
+The goal is finding that “sweet spot”.
+
+5) REGULARIZATION
+
+Regularization is used to reduce overfitting by adding a penalty term to the cost function that discourages large weights.
+
+a) Ridge Regression (L2 Regularization)
+
+Adds a penalty proportional to the square of the weights.
+
+→ Keeps all features but shrinks their effect (weights get smaller).
+→ Helps prevent overfitting without eliminating features.
+
+b) Lasso Regression (L1 Regularization)
+
+Adds a penalty proportional to the absolute value of the weights.
+
+→ Can drive some weights to zero, effectively removing useless features.
+→ Performs feature selection automatically.
+
+c) Elastic Net
+
+A combination of Ridge and Lasso.
+You can control the balance between both penalties using a parameter r.
+
+→ Usually better than Lasso alone, especially when features are highly correlated.
+
+d) Early Stopping
+
+Another way to regularize is to stop training early when the validation error starts increasing (while training error keeps decreasing).
+This prevents the model from overfitting.
+
+6) LOGISTIC REGRESSION
+
+Logistic regression is actually a binary classifier, not a regression in the traditional sense.
+
+How it works:
+
+It calculates a linear combination of the input features (same as linear regression),
+but then applies the logistic (sigmoid) function to output a value between 0 and 1.
+
+p = 1 / (1 + e^(–(θ₀ + θ₁x₁ + ... + θₙxₙ)))
+
+
+If p > 0.5, predict positive; otherwise negative.
+
+Training & Cost Function:
+
+If the true label is y=1:
+
+Cost = –log(p)
+
+
+If the true label is y=0:
+
+Cost = –log(1 – p)
+
+
+This heavily penalizes confident wrong predictions.
+For example, if y=1 but p is close to 0 → huge penalty.
+
+Note:
+
+The logit function is defined as:
+
+logit(p) = log(p / (1 – p))
+
+
+It’s the inverse of the logistic function — converting probabilities back into the log-odds form.
+
+✅ PS:
+Come back to the exercises for this chapter — they’re actually interesting and good for deep understanding.

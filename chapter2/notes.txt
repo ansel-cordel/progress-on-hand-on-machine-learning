@@ -1,0 +1,136 @@
+Chapter 2: SUPERVISED LEARNING – REGRESSION
+1) Splitting the Data
+
+When splitting a dataset, there are a few important considerations:
+
+Consistency: The split should be random but reproducible, even when new data is added.
+
+Representativeness: Both training and test sets should reflect the overall distribution of important attributes.
+
+Example:
+For the median_income attribute, create 5 income categories to cover the full range of values. Then, split the dataset so each category is fairly represented in both the training and test sets. After splitting, the temporary income category column should be removed.
+
+Recommended code (Python / Scikit-Learn):
+
+# Step 1: Create income categories for stratification
+housing["income_cat"] = pd.cut(
+    housing["median_income"],
+    bins=[0., 1.5, 3.0, 4.5, 6., np.inf],
+    labels=[1, 2, 3, 4, 5]
+)
+
+# Step 2: Split the data with stratified sampling (80% train, 20% test)
+strat_train_set, strat_test_set = train_test_split(
+    housing,
+    test_size=0.2,
+    stratify=housing["income_cat"],
+    random_state=42
+)
+
+2) Exploring and Visualization
+
+Use Matplotlib or similar tools to visualize your data. Look for patterns, clusters, or anomalies.
+
+Experiment with hyperparameters of visualization methods to reveal hidden patterns.
+
+Compute correlations to see relationships between attributes. Visualizing them is often better than just computing, because correlations might not be linear and could be missed in numeric values.
+
+Attribute combinations: Some attributes become meaningful only when combined.
+
+Example: the total number of rooms in a district is not very useful alone; the number of rooms per household is more informative.
+
+3) Preparing the Data
+a) Handling Missing Data
+
+You can handle missing data in several ways:
+
+Drop columns with too many missing values.
+
+Drop rows with missing values.
+
+Fill missing values with a replacement strategy (e.g., median, mean, or mode) using Scikit-Learn’s SimpleImputer.
+
+Example:
+
+from sklearn.impute import SimpleImputer
+
+imputer = SimpleImputer(strategy="median")
+imputer.fit(numerical_data)   # Compute median for each column
+transformed_data = imputer.transform(numerical_data)
+
+
+Other strategies include KNNImputer or IterativeImputer.
+
+b) Handling Text and Categorical Attributes
+
+Ordinal Categories: Use OrdinalEncoder if categories have a natural order (e.g., low, medium, high).
+
+Nominal Categories: Use OneHotEncoder to create a column for each category.
+
+Sets 1 if the row belongs to that category, 0 otherwise.
+
+Better than pandas.get_dummies because it remembers the column names and counts, preventing issues with new or missing categories in future data.
+
+Tip: For high-cardinality categorical features, consider replacing them with useful numerical features.
+
+Example: replace ocean_proximity with distance_to_ocean.
+
+c) Feature Scaling
+
+Scaling ensures attributes are on a similar scale, preventing large-value features from dominating training.
+
+Common scaling methods:
+
+Standardization (mean 0, variance 1)
+
+Min-Max scaling
+
+For skewed distributions or heavy tails, consider:
+
+Log or square root transformation
+
+Bucketization (like income categories)
+
+Creating features based on distance to distribution peaks (RBF-style)
+
+These techniques help linear models capture nonlinear relationships.
+
+d) Target Transformation
+
+Apply the same scaling or transformations to the target variable if it is skewed or has extreme values.
+
+e) Custom Transformers and Pipelines
+
+You can create custom transformers, either stateless or stateful, for feature engineering.
+
+Pipeline: sequences transformations and model training into a single workflow.
+
+Ensures no data leakage.
+
+Simplifies deployment by applying the same transformations consistently.
+
+4) Selecting and Training a Model
+
+Start with a simple model and evaluate its performance.
+
+If underfitting, try a more complex model.
+
+If overfitting, consider:
+
+Cross-validation
+
+Improving or expanding the dataset
+
+Iterate until the model performance is satisfactory.
+
+5) Fine-Tuning the Model
+
+Fine-tuning involves finding the best hyperparameters for the model.
+
+Methods:
+
+Grid Search: tests all combinations of hyperparameters (best if you have few parameters).
+
+Randomized Search: tests a random subset of combinations (faster but might miss the optimal set).
+
+Advanced alternatives: HalvingGridSearchCV, HalvingRandomSearchCV.

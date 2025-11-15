@@ -1,0 +1,91 @@
+---------------------------------------------------Chapter 7: RANDOM FORESTS------------------------------------------------------------------------------------------------
+
+ENSEMBLE LEARNING
+
+Ensemble learning is basically the idea of combining several weak models (simple ones that aren’t great on their own) to build a strong model that performs better overall.
+Think of it like the coin analogy — if you have multiple slightly inaccurate predictors, combining their opinions gets you closer to the true answer.
+
+There are two main voting methods:
+
+Hard voting: Each model votes for a class, and the majority wins.
+
+Soft voting: Each model outputs probabilities, and we take the average.
+Soft voting usually performs better because it gives more weight to models that are more confident in their predictions.
+
+HOW TO GET DIVERSE MODELS
+
+To make an ensemble effective, the individual models must be diverse.
+You can get diversity by:
+
+Using different algorithms
+
+Using different hyperparameters
+
+Or using different subsets of the training data
+
+There are two main ways to sample data for this:
+
+1. Bagging (Bootstrap Aggregating)
+
+It splits the data randomly with replacement (so some instances can appear more than once in a subset).
+
+You can enable this with bootstrap=True.
+
+Bagging keeps roughly the same bias as a single model but reduces variance — meaning it becomes more stable and generalizes better.
+
+On average, each model in bagging sees about 67% of the data, leaving the remaining 33% unused for that model.
+That leftover part can be used for out-of-bag (OOB) validation, which is a neat built-in way to evaluate performance without a separate test set.
+
+2. Pasting
+
+Similar to bagging but without replacement, so no duplicates in the same training subset.
+
+(Models can still have some shared instances between them, though.)
+
+RANDOM FORESTS
+
+A Random Forest is basically an ensemble of Decision Trees, usually trained using bagging.
+
+To make the trees even more diverse (and avoid them all looking the same), Random Forests add extra randomness:
+
+When a node is being split, instead of looking at all features, it only looks at a random subset of them (commonly √n features).
+
+Some versions even pick a random threshold for splitting instead of the best one.
+
+One cool thing about Random Forests is that they can also tell you which features are most important — by checking which ones reduced impurity the most across all trees.
+
+BOOSTING
+
+Boosting is another ensemble method, but instead of training models independently (like bagging), it trains them sequentially — each new model tries to fix the mistakes of the previous one.
+In other words, each learner focuses more on the examples that the earlier ones got wrong.
+
+ADA BOOST
+
+(You can add your AdaBoost notes here later — the idea is that it adjusts the weights of misclassified samples so that the next model pays more attention to them.)
+
+GRADIENT BOOSTING
+
+Gradient Boosting follows a similar idea to AdaBoost but instead of adjusting weights, it focuses on residual errors — the difference between the model’s predictions and the true values.
+
+It works like this:
+
+Start by training a simple (weak) model — usually a small decision tree.
+
+Calculate the residual errors (what the model got wrong).
+
+Train the next model on those residuals.
+
+Add that model’s prediction to the overall ensemble with a learning rate (η), which controls how big each step is.
+
+This continues for several iterations, each time correcting the previous model a little bit — kind of like gradient descent but for decision trees.
+
+The final prediction is:
+
+ŷ(x) = Σ η * hₘ(x)
+
+
+Where:
+
+η is the learning rate (smaller = slower but better generalization)
+
+hₘ(x) are the individual models trained at each step

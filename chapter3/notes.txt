@@ -1,0 +1,70 @@
+Chapter: CLASSIFICATION
+1) Binary Classification
+a) Measurement
+
+Confusion Matrix:
+Compares predicted targets with actual targets and counts how often instances of class A are classified as class B, for all A/B pairs.
+
+Precision and Recall:
+
+Precision: Of all examples predicted as positive, how many were actually positive?
+
+Recall: Of all actual positive examples, how many did the classifier correctly detect?
+
+Note: High recall alone is not enough, because it ignores false positives. Catching all positives is useless if you also classify too many negatives as positives.
+
+F1 Score:
+Combines precision and recall into a single score to compare classifiers.
+
+b) Recall/Precision Tradeoff
+
+Classifiers often give a confidence score for each instance.
+
+To classify an instance as positive or negative, a threshold is applied.
+
+Raising the threshold usually increases precision but lowers recall, and lowering it increases recall but reduces precision.
+
+You can visualize this tradeoff to choose a threshold based on your needs.
+
+Example in Scikit-Learn:
+
+predict(sgd_clf, X_train, y_train_5, cv=3, method="decision_function")
+
+
+Note: Random Forests do not provide decision scores, but they do provide probabilities, which can be used similarly.
+
+2) Multiclass Classification
+
+Overview:
+Multiclass classification handles more than two classes. There are two common strategies:
+
+One-vs-Rest (OvR):
+
+Train one classifier per class against all others.
+
+For example, with 10 classes, train 10 binary classifiers.
+
+The class with the highest score is chosen.
+
+One-vs-One (OvO):
+
+Train a classifier for each pair of classes.
+
+For example, with 10 classes, train 45 classifiers (10 choose 2).
+
+Measurement:
+
+Accuracy is usually enough for multiclass classification, as it is straightforward.
+
+Example in Scikit-Learn:
+
+from sklearn.multiclass import OneVsRestClassifier
+from sklearn.svm import SVC
+
+ovr_clf = OneVsRestClassifier(SVC(random_state=42))
+ovr_clf.fit(X_train[:2000], y_train[:2000])
+
+
+Note: When training a single model, Scikit-Learn automatically chooses a strategy (OvR or OvO), but you can specify which one to use.
+
+Tip: Go back to exercises — they are practical and help consolidate your understanding of these concepts.

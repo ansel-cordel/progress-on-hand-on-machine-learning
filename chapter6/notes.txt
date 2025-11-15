@@ -1,0 +1,50 @@
+----------------------------------------------Chapter 6: DECISION TREES-------------------------------------------------------------------
+
+A decision tree is basically like building a flowchart that helps you make predictions.
+Each node in the tree asks a question (true or false), and depending on the answer, you move down one of the branches until you reach a leaf node, which gives the final prediction.
+
+When the model builds the tree, it tries to find the best way to split the data at each step.
+It does this by testing all features and choosing the one that gives the least impurity — meaning it makes the data more “pure” (each group has samples that are more similar).
+This splitting keeps going until one of these happens:
+
+The maximum depth of the tree is reached (max_depth)
+
+There are too few samples left to split (min_samples_split)
+
+The node is already pure (all samples belong to one class)
+
+The impurity improvement is too small to matter
+
+To measure impurity, we usually use Gini impurity or Entropy.
+Both give similar results, but:
+
+Gini impurity tends to separate the most common class faster
+
+Entropy tends to make the tree a bit more balanced
+
+HYPERPARAMETERS
+
+The DecisionTreeClassifier has some key hyperparameters that control how deep or wide the tree can grow:
+
+max_features: Max number of features to consider when splitting
+
+max_leaf_nodes: Max number of leaf nodes the tree can have
+
+min_samples_split: Minimum number of samples needed to make a split
+
+min_samples_leaf: Minimum number of samples needed to form a leaf
+
+min_weight_fraction_leaf: Same as above but as a fraction of the total samples
+
+If you increase the min_* values or decrease the max_* ones, you’ll regularize the model — meaning it will be simpler and less likely to overfit.
+
+REGRESSION
+
+For regression problems, it’s almost the same idea.
+The only difference is that instead of measuring impurity, we measure Mean Squared Error (MSE).
+At each step, the tree picks the split that gives the lowest MSE, and at the end, the leaf value is just the average of the remaining samples in that leaf.
+
+PS:
+
+Decision trees are greedy algorithms — they only look for the best split right now, without thinking about how that choice affects later splits.
+So, we can’t get the perfect decision tree (it would take too long to find), but the result we get is usually good enough — and honestly, decision trees are still pretty goated.

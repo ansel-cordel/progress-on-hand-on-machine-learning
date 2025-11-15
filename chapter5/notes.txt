@@ -1,0 +1,170 @@
+CHAPTER 5: SUPPORT VECTOR MACHINES (SVM)
+--------------------------------------------------------------- 
+BASIC CONCEPT
+
+The basic idea of an SVM (Support Vector Machine) is to find a hyperplane that best separates data points of different classes.
+It tries to maximize the margin (the distance between the separating line and the nearest data points of each class).
+These closest points are called support vectors.
+
+In simple terms → SVM tries to find the widest possible street between two classes while keeping violations (misclassified or overlapping points) minimal.
+
+ Soft Margin vs Hard Margin
+
+Hard margin: strictly separates all points (no mistakes allowed). Works only if data is perfectly separable.
+
+Soft margin: allows some misclassifications (violations) for better generalization.
+→ This is what’s usually used, since real data isn’t perfect.
+
+Idea: keep the margin as large as possible, even if it means allowing some violations (outliers).
+
+ HYPERPARAMETERS
+
+C → controls how much the model tolerates errors (trade-off between margin width and misclassification penalty).
+
+Small C → more tolerant → softer margin → prevents overfitting
+
+Large C → stricter → tries to classify all points correctly → risk of overfitting
+
+🔹 NON-LINEAR SVMs
+
+Sometimes, data is not linearly separable.
+In that case, SVMs can add new features or dimensions to make it separable.
+This is done using polynomial or similarity-based (RBF) transformations.
+
+ Kernel Trick
+
+You might think adding dimensions will make it very slow — but SVMs use something called the Kernel Trick.
+
+The Kernel Trick computes the dot product of transformed features without ever computing the transformation itself.
+This saves huge computation and memory costs.
+
+→ Each type of SVM (linear, polynomial, RBF, etc.) has its own kernel function for this trick.
+
+Example idea: instead of manually computing x² or x³ features,
+we just take (x ⋅ x')² or (x ⋅ x')³ as the kernel function result.
+
+ COMMON KERNELS
+1) Polynomial Kernel
+
+Creates polynomial combinations of the original features.
+
+Hyperparameter:
+
+coef0 → controls how much the model is influenced by higher-degree terms.
+
+Use case: When data is somewhat related through polynomial-like boundaries.
+
+2) RBF (Gaussian) Kernel
+
+This one uses similarity instead of direct transformations.
+It picks a landmark (center) and measures how similar each point is to it (using distance).
+
+The similarity decreases as distance increases, forming a Gaussian-shaped curve (values between 0 and 1).
+
+Hyperparameter:
+
+gamma (γ) → controls how tight this Gaussian curve is.
+
+High gamma → tight, local influence → risk of overfitting
+
+Low gamma → broad influence → smoother decision boundary → might underfit
+
+ Note:
+
+SVMs do not provide probability estimates directly.
+→ predict_proba() is not available for standard SVMs (only with specific settings like SVC(probability=True) which uses Platt scaling).
+
+ SVM FOR REGRESSION (SVR)
+
+SVMs can also be used for regression tasks, known as Support Vector Regression (SVR).
+
+Idea:
+
+Instead of finding a hyperplane that separates data, it finds one that fits as many data points as possible inside a “tube” (margin).
+
+The width of this tube is controlled by ε (epsilon).
+
+Points inside the tube are ignored (no penalty).
+
+Only points outside the tube affect the training (they create penalties).
+
+Hyperparameter:
+
+ε (epsilon) → controls the tolerance zone.
+
+Large ε → ignore more errors → smoother model
+
+Small ε → stricter → more sensitive to noise
+
+ UNDER THE HOOD (HOW IT WORKS)
+
+A linear SVM classifier predicts the class of a new instance x by computing:
+
+decision = θᵀ · x
+
+Street Borders:
+
+We define the edges of the “street” as points where:
+
+decision = +1 and decision = -1
+
+
+The margin width is given by:
+
+margin = 2 / ||w||
+
+
+So, minimizing ||w|| (the norm of the weights) maximizes the margin, which is the main goal.
+
+For Non-Linear Data:
+
+We introduce a slack variable (ξ) for each point to measure how much it violates the margin.
+The optimization then becomes a trade-off between:
+
+Maximizing the margin width
+
+Minimizing the total violation (controlled by C)
+
+This leads to a soft margin optimization problem.
+
+Alternative Loss Functions
+
+Instead of direct penalties, we can use hinge loss or squared hinge loss functions to train the model.
+
+Example idea (not exact formulas here):
+
+Hinge loss: penalizes only points that are within or on the wrong side of the margin.
+
+Squared hinge: same but with squared penalties for smoother optimization.
+
+(Search for the exact formulas if you want to go deeper.)
+
+🔹 DUAL PROBLEM (vs PRIMAL)
+
+The dual problem is a reformulation of the original optimization problem (called the primal).
+Under certain mathematical conditions (which SVMs satisfy), both give the same solution.
+
+The advantage of the dual form is that it allows the use of the Kernel Trick, which drastically improves computational efficiency for high-dimensional or non-linear data.
+
+ Recap: Kernel Trick Summary
+
+Instead of transforming all data points into higher-dimensional space (which would be slow and memory-heavy),
+we just compute dot products in that space directly using a kernel function.
+
+So in short:
+
+Kernel(x, x') = (Φ(x) ⋅ Φ(x'))
+
+
+where Φ(x) is the transformation function (which we don’t actually compute).
+
+Examples:
+
+Linear kernel: (x ⋅ x')
+
+Polynomial: (x ⋅ x' + 1)^d
+
+RBF: exp(-γ ||x - x'||²)
+
+ PS: Search up the exact kernel equations and hinge loss formula later.
+They’re short and worth memorizing for intuition and exams.
