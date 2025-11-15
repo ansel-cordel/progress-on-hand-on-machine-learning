@@ -73,7 +73,7 @@ Pros and Cons
 
  Simple and efficient
  Works well on spherical, well-separated clusters
- but:
+ 
  Struggles with non-spherical or unevenly sized clusters
  Requires K to be known beforehand
 
